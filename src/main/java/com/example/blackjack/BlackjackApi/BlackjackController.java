@@ -14,17 +14,17 @@ public class BlackjackController {
     public BlackjackController(BlackjackService blackjackService) {
         this.blackjackService = blackjackService;
     }
+
     @GetMapping("/id")
-    Mono<ResponseEntity<?>>id(@RequestParam int id){
-      return   blackjackService.findId(id).map(deckId->{
+    Mono<ResponseEntity<?>> id(@RequestParam int id) {
+        return blackjackService.findId(id).map(deckId -> {
             String url = "http://localhost:8080/blackjack/" + deckId;
-            return ResponseEntity.status(302)
-                    .header("Location", url)
-                    .build();
+            return ResponseEntity.status(302).header("Location", url).build();
         });
     }
+
     @GetMapping("/{deck_id}")
-    Mono<Draw>draw(@PathVariable String deck_id,@RequestParam(defaultValue = "0") int count){
-        return blackjackService.drawCards(deck_id,count);
+    Mono<Draw> draw(@PathVariable String deck_id, @RequestParam(defaultValue = "0") int count) {
+        return blackjackService.drawCards(deck_id, count);
     }
 }

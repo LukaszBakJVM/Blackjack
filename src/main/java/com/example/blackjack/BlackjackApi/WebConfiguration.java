@@ -9,8 +9,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebConfiguration {
     @Value("${baseUrl}")
     private String base;
+
     @Bean
-    WebClient.Builder webClient(){
+    WebClient.Builder webClient() {
         return WebClient.builder().baseUrl(base);
     }
 }

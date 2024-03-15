@@ -1,4 +1,4 @@
-package com.example.blackjack.Game;
+package com.example.blackjack.Game.Game;
 
 public enum CardsEnum {
 

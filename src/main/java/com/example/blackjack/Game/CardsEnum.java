@@ -15,4 +15,8 @@ public enum CardsEnum {
     public int getVALUES() {
         return VALUES;
     }
+
+    public String getCARDS() {
+        return CARDS;
+    }
 }

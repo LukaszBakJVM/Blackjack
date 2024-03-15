@@ -1,8 +1,11 @@
 package com.example.blackjack.BlackjackApi;
 
+import com.example.blackjack.Game.Game.CardsEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 @Service
 public class BlackjackService {
@@ -21,5 +24,9 @@ public class BlackjackService {
         return webClient.get().uri(uriBuilder -> uriBuilder.path("/api/deck/" + deck_id + "/draw/").queryParam("count", count).build()).retrieve().bodyToMono(Draw.class);
     }
 
+    int cardValue(String cardValueFromApi) {
+        return Arrays.stream(CardsEnum.values()).filter(cardsEnum -> cardsEnum.getCARDS().equals(cardValueFromApi)).map(CardsEnum::getVALUES).findFirst().get();
 
+
+    }
 }

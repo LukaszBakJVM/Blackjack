@@ -1,5 +1,6 @@
 package com.example.blackjack.BlackjackApi;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -23,8 +24,11 @@ public class BlackjackController {
         });
     }
 
+
     @GetMapping("/{deck_id}")
-    Mono<Draw> draw(@PathVariable String deck_id, @RequestParam(defaultValue = "0") int count) {
-        return blackjackService.drawCards(deck_id, count);
+    Mono<CardsDto> value(@PathVariable String deck_id, @RequestParam(defaultValue = "0") int count) {
+
+        return blackjackService.strings(deck_id, count);
     }
+
 }

@@ -31,7 +31,7 @@ public class BlackjackService {
         return cardValueFromApi.stream().mapToInt(s -> Arrays.stream(CardsEnum.values()).filter(v -> v.getCARDS().equals(s)).findFirst().map(CardsEnum::getVALUES).orElse(0)).sum();
     }
 
-    Mono<CardsDto> strings(String deck_id, int count) {
+    Mono<CardsDto> cardsImageEndSum(String deck_id, int count) {
         return drawCards(deck_id, count).map(draw -> new CardsDto(draw.remaining(), draw.cards().stream().map(Cards::image).toList(), draw.cards().stream().map(Cards::value).toList(), cardValue(draw.cards().stream().map(Cards::value).toList())));
 
 

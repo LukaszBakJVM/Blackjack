@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,15 +28,7 @@ public class BlackjackService {
     }
 
     private int cardValue(List<String> cardValueFromApi) {
-        List<Integer> integers = new ArrayList<>();
-        for (String s : cardValueFromApi) {
-            CardsEnum cardsEnum = Arrays.stream(CardsEnum.values()).filter(v -> v.getCARDS().equals(s)).findFirst().get();
-            int values = cardsEnum.getVALUES();
-            integers.add(values);
-        }
-
-        System.out.println(integers);
-        return integers.stream().mapToInt(Integer::intValue).sum();
+        return cardValueFromApi.stream().mapToInt(s -> Arrays.stream(CardsEnum.values()).filter(v -> v.getCARDS().equals(s)).findFirst().map(CardsEnum::getVALUES).orElse(0)).sum();
     }
 
     Mono<CardsDto> strings(String deck_id, int count) {

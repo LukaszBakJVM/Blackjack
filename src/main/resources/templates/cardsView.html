@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Karty</title>
+    <style>
+        .card-image {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
+<form th:action="@{/show-cards/{id}(id=${id})}" method="get">
+    <label for="count">Liczba kart:</label>
+    <input type="text" id="count" name="count" pattern="[0-9]*" title="Wprowadź liczbę całkowitą">
+    <button type="submit">Wyślij</button>
+</form>
+
 <p>Pozostało kart: <span th:text="${cardsDto.remaining}"></span></p>
 <p>Suma: <span th:text="${cardsDto.sum}"></span></p>
-<ul>
-    <li th:each="card : ${cardsDto.cards}">
-        <img th:src="${card}" alt="Karta">
-    </li>
-</ul>
+<div>
+    <th:block th:each="card : ${cardsDto.cards}">
+        <img class="card-image" th:src="${card}" alt="Karta">
+    </th:block>
+</div>
 </body>
 </html>

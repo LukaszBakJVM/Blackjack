@@ -19,7 +19,7 @@ public class BlackjackController {
     @GetMapping("/id")
     Mono<ResponseEntity<?>> id(@RequestParam int id) {
         return blackjackService.findId(id).map(deckId -> {
-            String url = "http://localhost:8080/blackjack/" + deckId;
+            String url = "http://localhost:8080/show-cards/" + deckId;
             return ResponseEntity.status(302).header("Location", url).build();
         });
     }

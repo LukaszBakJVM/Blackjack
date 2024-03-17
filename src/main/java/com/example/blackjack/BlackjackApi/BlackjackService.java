@@ -28,12 +28,16 @@ public class BlackjackService {
     }
 
     private int cardValue(List<String> cardValueFromApi) {
-        return Arrays.stream(CardsEnum.values()).filter(cardsEnum -> cardValueFromApi.contains(cardsEnum.getCARDS())).mapToInt(CardsEnum::getVALUES).sum();
+
+
+        return Arrays.stream(CardsEnum.values()).filter(cardsEnum -> cardValueFromApi.contains(cardsEnum.getCARDS())).map(CardsEnum::getVALUES).mapToInt(Integer::valueOf).sum();
 
     }
 
     Mono<CardsDto> strings(String deck_id, int count) {
-        return drawCards(deck_id, count).map(draw -> new CardsDto(draw.remaining(), draw.cards().stream().map(Cards::image).toList(), cardValue(draw.cards().stream().map(Cards::value).toList())));
+        return drawCards(deck_id, count).map(draw -> new CardsDto(draw.remaining(), draw.cards().stream().map(Cards::image).toList(),
+                draw.cards().stream().map(Cards::value).toList(),
+                cardValue(draw.cards().stream().map(Cards::value).toList())));
 
 
     }

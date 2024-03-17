@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,16 +29,19 @@ public class BlackjackService {
     }
 
     private int cardValue(List<String> cardValueFromApi) {
+        List<Integer> integers = new ArrayList<>();
+        for (String s : cardValueFromApi) {
+            CardsEnum cardsEnum = Arrays.stream(CardsEnum.values()).filter(v -> v.getCARDS().equals(s)).findFirst().get();
+            int values = cardsEnum.getVALUES();
+            integers.add(values);
+        }
 
-
-        return Arrays.stream(CardsEnum.values()).filter(cardsEnum -> cardValueFromApi.contains(cardsEnum.getCARDS())).map(CardsEnum::getVALUES).mapToInt(Integer::valueOf).sum();
-
+        System.out.println(integers);
+        return integers.stream().mapToInt(Integer::intValue).sum();
     }
 
     Mono<CardsDto> strings(String deck_id, int count) {
-        return drawCards(deck_id, count).map(draw -> new CardsDto(draw.remaining(), draw.cards().stream().map(Cards::image).toList(),
-                draw.cards().stream().map(Cards::value).toList(),
-                cardValue(draw.cards().stream().map(Cards::value).toList())));
+        return drawCards(deck_id, count).map(draw -> new CardsDto(draw.remaining(), draw.cards().stream().map(Cards::image).toList(), draw.cards().stream().map(Cards::value).toList(), cardValue(draw.cards().stream().map(Cards::value).toList())));
 
 
     }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Karty</title>
+</head>
+<body>
+<p>Pozostało kart: <span th:text="${cardsDto.remaining}"></span></p>
+<p>Suma: <span th:text="${cardsDto.sum}"></span></p>
+<ul>
+    <li th:each="card : ${cardsDto.cards}">
+        <img th:src="${card}" alt="Karta">
+    </li>
+</ul>
+</body>
+</html>

@@ -32,7 +32,7 @@ public class BlackjackService {
     }
 
     Mono<CardsDto> cardsImageEndSum(String deck_id, int count) {
-        return drawCards(deck_id, count).map(draw -> new CardsDto(draw.remaining(), draw.cards().stream().map(Cards::image).toList(), draw.cards().stream().map(Cards::value).toList(), cardValue(draw.cards().stream().map(Cards::value).toList())));
+        return drawCards(deck_id, count).map(draw -> new CardsDto(draw.deck_id(),draw.remaining(), draw.cards().stream().map(Cards::image).toList(), draw.cards().stream().map(Cards::value).toList(), cardValue(draw.cards().stream().map(Cards::value).toList())));
 
 
     }

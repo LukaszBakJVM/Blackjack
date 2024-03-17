@@ -27,7 +27,6 @@ public class BlackjackController {
 
     @GetMapping("/{deck_id}")
     Mono<CardsDto> value(@PathVariable String deck_id, @RequestParam(defaultValue = "0") int count) {
-
         return blackjackService.cardsImageEndSum(deck_id, count);
     }
 

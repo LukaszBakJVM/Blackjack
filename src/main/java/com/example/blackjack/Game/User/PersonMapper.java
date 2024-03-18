@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonMapper {
-    PersonDto map(CardsDto cardsDto){
-        return new PersonDto( cardsDto.sum());
+    private int sum =21;
+  public   PersonDto map(CardsDto cardsDto){
+        sum-=cardsDto.sum();
+
+        return new PersonDto(cardsDto.id(), cardsDto.remaining(), cardsDto.cards(),cardsDto.values(),sum);
     }
 }

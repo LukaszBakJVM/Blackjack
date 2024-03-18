@@ -1,6 +1,8 @@
 package com.example.blackjack.Game.Game;
 
 import com.example.blackjack.BlackjackApi.CardsDto;
+import com.example.blackjack.Game.User.PersonDto;
+import com.example.blackjack.Game.User.PersonMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +14,15 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class GameController {
     private final RestTemplate restTemplate;
+    private final PersonMapper personMapper;
      @Value("${cardsUrl}")
     private  String apiUrl ;
     private int sum = 21;
 
 
-    public GameController(RestTemplate restTemplate) {
+    public GameController(RestTemplate restTemplate, PersonMapper personMapper) {
         this.restTemplate = restTemplate;
+        this.personMapper = personMapper;
     }
 
 
@@ -27,10 +31,9 @@ public class GameController {
 
         String apiEndpoint = apiUrl + id + "?count=" + count;
 
-        CardsDto cardsDto = restTemplate.getForObject(apiEndpoint, CardsDto.class);
+        CardsDto forObject = restTemplate.getForObject(apiEndpoint, CardsDto.class);
+        PersonDto cardsDto = personMapper.map(forObject);
 
-        sum -= cardsDto.sum();
-        cardsDto = new CardsDto(cardsDto.id(), cardsDto.remaining(), cardsDto.cards(), cardsDto.values(), sum);
 
         model.addAttribute("cardsDto", cardsDto);
         return "cardsView";

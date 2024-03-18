@@ -18,10 +18,10 @@
     <button type="submit">Wyślij</button>
 </form>
 
-<p>Pozostało kart: <span th:text="${cardsDto.remaining}"></span></p>
-<p>Suma: <span th:text="${cardsDto.sum}"></span></p>
+<p>Pozostało kart: <span th:text="${person.remaining}"></span></p>
+<p>Suma: <span th:text="${person.sum}"></span></p>
 <div>
-    <th:block th:each="card : ${cardsDto.cards}">
+    <th:block th:each="card : ${person.cards}">
         <img class="card-image" th:src="${card}" alt="Karta">
     </th:block>
 </div>

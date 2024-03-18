@@ -32,10 +32,10 @@ public class GameController {
         String apiEndpoint = apiUrl + id + "?count=" + count;
 
         CardsDto forObject = restTemplate.getForObject(apiEndpoint, CardsDto.class);
-        PersonDto cardsDto = personMapper.map(forObject);
+        PersonDto person = personMapper.map(forObject);
 
 
-        model.addAttribute("cardsDto", cardsDto);
+        model.addAttribute("person", person);
         return "cardsView";
     }
 

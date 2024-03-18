@@ -1,29 +1,39 @@
 package com.example.blackjack.Game.Game;
 
 import com.example.blackjack.BlackjackApi.CardsDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class GameController {
-    private final WebClient webClient;
-    // @Value("${cardsUrl}")
-    private final String apiUrl = "http://localhost:8080/blackjack/";
+    private final RestTemplate restTemplate;
+     @Value("${cardsUrl}")
+    private  String apiUrl ;
+    private int sum = 21;
 
-    public GameController(WebClient.Builder webClient) {
-        this.webClient = webClient.baseUrl(apiUrl).build();
+
+    public GameController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
+
     @GetMapping("/show-cards/{id}")
-    public Mono<String> showCards(@PathVariable String id, @RequestParam(defaultValue = "0") int count, Model model) {
+    public String showCards(@PathVariable String id, @RequestParam(defaultValue = "0") int count, Model model) {
 
+        String apiEndpoint = apiUrl + id + "?count=" + count;
 
-        return webClient.get().uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build()).retrieve().bodyToMono(CardsDto.class).doOnNext(cardsDto -> model.addAttribute("cardsDto", cardsDto)).thenReturn("cardsView");
+        CardsDto cardsDto = restTemplate.getForObject(apiEndpoint, CardsDto.class);
+
+        sum -= cardsDto.sum();
+        cardsDto = new CardsDto(cardsDto.id(), cardsDto.remaining(), cardsDto.cards(), cardsDto.values(), sum);
+
+        model.addAttribute("cardsDto", cardsDto);
+        return "cardsView";
     }
 
     @GetMapping("/")

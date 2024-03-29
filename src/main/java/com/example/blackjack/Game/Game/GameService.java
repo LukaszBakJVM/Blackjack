@@ -1,6 +1,7 @@
 package com.example.blackjack.Game.Game;
 
 import com.example.blackjack.BlackjackApi.CardsDto;
+import com.example.blackjack.Game.User.Exception.GameOverException;
 import com.example.blackjack.Game.User.PersonDto;
 import com.example.blackjack.Game.User.PersonMapper;
 import com.example.blackjack.Game.User.PersonRepository;
@@ -26,10 +27,19 @@ public class GameService {
 
     Mono<PersonDto> personDto(String id, int count) {
 
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build())
+                .retrieve()
+                .bodyToMono(CardsDto.class)
+                .map(cardsDto -> {
 
-        return webClient.get().uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build()).retrieve().bodyToMono(CardsDto.class).map(personMapper::map);
-
-
+                    PersonDto map = personMapper.map(cardsDto);
+                    if (map.sum() < 0) {
+                        throw new GameOverException("Przegrałeś");
+                    } else {
+                        return map;
+                    }
+                });
     }
 
 

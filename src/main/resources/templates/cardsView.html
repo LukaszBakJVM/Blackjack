@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-<p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
 <form th:action="@{/show-cards/{id}(id=${id})}" method="get">
     <label for="count">Liczba kart:</label>
     <input type="text" id="count" name="count" pattern="[0-9]*" title="Wprowadź liczbę całkowitą">

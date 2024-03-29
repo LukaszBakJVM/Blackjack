@@ -8,11 +8,19 @@ public class PersonMapper {
     private int sum = 21;
 
     public PersonDto map(CardsDto cardsDto) {
-        sum -= cardsDto.sum();
+
+
+        return new PersonDto(cardsDto.id(), cardsDto.remaining(), cardsDto.cards(), cardsDto.values(), points(cardsDto.sum()));
+    }
+
+    private int points(int startPoints) {
+
+        sum -= startPoints;
         if (sum < 0) {
             sum = 21;
-        }
 
-        return new PersonDto(cardsDto.id(), cardsDto.remaining(), cardsDto.cards(), cardsDto.values(), sum);
+
+        }
+        return sum;
     }
 }

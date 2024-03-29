@@ -11,6 +11,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username;
+    private int points;
 
 
     public long getId() {
@@ -29,5 +30,11 @@ public class Person {
         this.username = username;
     }
 
+    public int getPoints() {
+        return points;
+    }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
 }

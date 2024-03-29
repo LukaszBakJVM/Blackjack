@@ -1,2 +1,2 @@
-insert into person  (username) values ('lukasz');
-insert into person (username) values ('marta');
+insert into person  (username,points) values ('lukasz',100);
+insert into person (username,points) values ('marta',100);

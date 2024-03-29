@@ -27,19 +27,15 @@ public class GameService {
 
     Mono<PersonDto> personDto(String id, int count) {
 
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build())
-                .retrieve()
-                .bodyToMono(CardsDto.class)
-                .map(cardsDto -> {
+        return webClient.get().uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build()).retrieve().bodyToMono(CardsDto.class).handle((cardsDto, sink) -> {
+            PersonDto map = personMapper.map(cardsDto);
+            if (map.sum() < 0) {
+                sink.error(new GameOverException("Przegrałeś"));
+            } else {
+                sink.next(map);
+            }
+        });
 
-                    PersonDto map = personMapper.map(cardsDto);
-                    if (map.sum() < 0) {
-                        throw new GameOverException("Przegrałeś");
-                    } else {
-                        return map;
-                    }
-                });
     }
 
 

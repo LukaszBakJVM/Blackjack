@@ -3,11 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h2>Przegrałeś</h2>
 <a th:href="@{/show-cards/{id}(id=${id})}">
-    <button>Nowa gra</button>
+    <button id="newGameButton">Nowa gra</button>
 </a>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#newGameButton').click(function() {
+
+
+
+            $.ajax({
+                url: '/show-cards/' + id,
+                type: 'GET',
+                success: function(response) {
+                    console.log('Endpoint /show-cards/' + id + ' został wywołany.');
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Wystąpił błąd podczas wywoływania endpointu /show-cards/' + id + ':', error);
+                }
+            });
+
+
+            $.ajax({
+                url: '/show-cards/reset21Points',
+                type: 'GET',
+                success: function(response) {
+                    console.log('Endpoint /show-cards/aaa został wywołany.');
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Wystąpił błąd podczas wywoływania endpointu /show-cards/aaa:', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

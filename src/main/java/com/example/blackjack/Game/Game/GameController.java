@@ -24,6 +24,10 @@ public class GameController {
 
 
     }
+    @GetMapping("/show-cards/reset21Points")
+    int resetPoints(){
+        return gameService.resetPoints();
+    }
 
     @GetMapping("/")
     String start() {

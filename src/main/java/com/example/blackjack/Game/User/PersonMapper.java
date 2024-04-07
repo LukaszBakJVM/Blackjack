@@ -13,7 +13,7 @@ public class PersonMapper {
         return new PersonDto(cardsDto.id(), cardsDto.remaining(), cardsDto.cards(), cardsDto.values(), points(cardsDto.sum()));
     }
 
-    private int points(int startPoints) {
+    public int points(int startPoints) {
         sum -= startPoints;
         return sum;
     }

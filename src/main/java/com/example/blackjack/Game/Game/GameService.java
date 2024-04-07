@@ -37,6 +37,10 @@ public class GameService {
         });
 
     }
+    int resetPoints(){
+       return personMapper.points(21);
+
+    }
 
 
 }

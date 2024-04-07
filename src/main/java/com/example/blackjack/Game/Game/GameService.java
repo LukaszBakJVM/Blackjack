@@ -15,7 +15,7 @@ public class GameService {
     private final WebClient webClient;
     private final PersonMapper personMapper;
     private final PersonRepository personRepository;
-    private final int sum = 21;
+
 
 
     public GameService(WebClient.Builder webClient, PersonMapper personMapper, PersonRepository personRepository) {
@@ -30,7 +30,7 @@ public class GameService {
         return webClient.get().uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build()).retrieve().bodyToMono(CardsDto.class).handle((cardsDto, sink) -> {
             PersonDto map = personMapper.map(cardsDto);
             if (map.sum() < 0) {
-                sink.error(new GameOverException("Przegrałeś"));
+                sink.error(new GameOverException(id));
             } else {
                 sink.next(map);
             }

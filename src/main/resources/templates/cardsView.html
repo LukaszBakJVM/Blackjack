@@ -12,9 +12,7 @@
     </style>
 </head>
 <body>
-<div th:if="${errorMessage}">
-    <p>Błąd: <span th:text="${errorMessage}"></span></p>
-</div>
+
 
 <form th:action="@{/show-cards/{id}(id=${id})}" method="get">
     <label for="count">Liczba kart:</label>

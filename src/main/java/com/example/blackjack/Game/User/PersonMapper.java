@@ -14,10 +14,7 @@ public class PersonMapper {
     }
 
     private int points(int startPoints) {
-
         sum -= startPoints;
-
-
         return sum;
     }
 }

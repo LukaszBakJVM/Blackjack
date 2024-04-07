@@ -16,11 +16,8 @@ public class PersonMapper {
     private int points(int startPoints) {
 
         sum -= startPoints;
-        if (sum < 0) {
-            sum = 21;
 
 
-        }
         return sum;
     }
 }

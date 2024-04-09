@@ -6,39 +6,43 @@ import com.example.blackjack.Game.User.PersonDto;
 import com.example.blackjack.Game.User.PersonMapper;
 import com.example.blackjack.Game.User.PersonRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GameService {
+    private final String url = "http://localhost:8080/blackjack/{id}?count={count}";
 
-    private final WebClient webClient;
+
     private final PersonMapper personMapper;
     private final PersonRepository personRepository;
+    private final RestTemplate restTemplate;
 
 
+    public GameService(PersonMapper personMapper, PersonRepository personRepository, RestTemplate restTemplate) {
 
-    public GameService(WebClient.Builder webClient, PersonMapper personMapper, PersonRepository personRepository) {
 
-        this.webClient = webClient.baseUrl("http://localhost:8080/blackjack/").build();
         this.personMapper = personMapper;
         this.personRepository = personRepository;
+        this.restTemplate = restTemplate;
     }
 
-    Mono<PersonDto> personDto(String id, int count) {
+    PersonDto personDto(String id, int count) {
 
-        return webClient.get().uri(uriBuilder -> uriBuilder.path(id).queryParam("count", count).build()).retrieve().bodyToMono(CardsDto.class).handle((cardsDto, sink) -> {
-            PersonDto map = personMapper.map(cardsDto);
-            if (map.sum() < 0) {
-                sink.error(new GameOverException(id));
-            } else {
-                sink.next(map);
-            }
-        });
+        CardsDto forObject = restTemplate.getForObject(url, CardsDto.class, id, count);
+        PersonDto map = personMapper.map(forObject);
+
+
+        if (map.sum() < 0) {
+            throw new GameOverException(id);
+        } else {
+            return map;
+        }
+
 
     }
-    int resetPoints(){
-       return personMapper.points(21);
+
+    int resetPoints() {
+        return personMapper.points(21);
 
     }
 

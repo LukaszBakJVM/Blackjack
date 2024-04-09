@@ -1,11 +1,11 @@
 package com.example.blackjack.Game.Game;
 
+import com.example.blackjack.Game.User.PersonDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Mono;
 
 @Controller
 public class GameController {
@@ -18,14 +18,16 @@ public class GameController {
 
 
     @GetMapping("/show-cards/{id}")
-    public Mono<String> showCards(@PathVariable String id, @RequestParam(defaultValue = "0") int count, Model model) {
-
-        return gameService.personDto(id, count).doOnNext(personDto -> model.addAttribute("person", personDto)).thenReturn("cardsView");
+    public String showCards(@PathVariable String id, @RequestParam(defaultValue = "0") int count, Model model) {
+        PersonDto personDto = gameService.personDto(id, count);
+        model.addAttribute("person", personDto);
+        return "cardsView";
 
 
     }
+
     @GetMapping("/show-cards/reset21Points")
-    int resetPoints(){
+    int resetPoints() {
         return gameService.resetPoints();
     }
 
